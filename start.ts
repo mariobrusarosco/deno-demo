@@ -6,17 +6,29 @@ const user = getName(me);
 
 console.log(user);
 
-const textEncoder = new TextEncoder();
-const textDecoder = new TextDecoder("utf-8");
+// Reading Files
+const filePath = "assets/reading.txt";
+// const decoder = new TextDecoder("utf-8");
+// const fileContent = await Deno.readFile(filePath);
+// const helloWorld = decoder.decode(fileContent);
 
-const filePath = "assets/hello-world.txt";
+const helloWorld = await Deno.readTextFile(filePath);
 
-const contentToAppend = textEncoder.encode(
-  "This sentence was written via Deno File System",
-);
-await Deno.writeFile(filePath, contentToAppend);
+// console.log(helloWorld);
 
-const fileContent = await Deno.readFile(filePath);
-const helloWorld = textDecoder.decode(fileContent);
+// Writing Files
+const filePath2 = "assets/writing.txt";
+const encoder = new TextEncoder();
 
-console.log(helloWorld);
+// const contentToAppend = encoder.encode(
+//   "This sentence was written via Deno File System",
+// );
+// await Deno.writeFile(filePath2, contentToAppend);
+// const writtenFile = await Deno.readFile(filePath2).then((data) =>
+//   decoder.decode(data)
+// );
+// console.log(writtenFile);
+
+// Renaming and removing Files
+await Deno.rename(filePath2, "assets/renamed.txt");
+await Deno.remove("assets/renamed.txt");
