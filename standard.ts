@@ -4,6 +4,8 @@ import { readJson, writeJson } from "https://deno.land/std/fs/mod.ts";
 const uid = v4.generate();
 console.log({ uid });
 
+// Reading JSON
+
 const breakingBad = await readJson("assets/fs-example.json");
 console.log({ breakingBad });
 
@@ -22,6 +24,7 @@ const json = [
   },
 ];
 
+// Writing JSON
 const breakingBad2 = await writeJson(
   "assets/written-fs-example.json",
   json,

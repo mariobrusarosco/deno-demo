@@ -151,5 +151,98 @@ const breakingBad2 = await writeJson("assets/written-fs-example.json", json, {
 
 ## Creating a server
 
+```bash
+$ deno run --allow-net server.ts
+```
+
 ```ts
+import { serve } from "https://deno.land/std/http/server.ts";
+
+const PORT = 3000;
+const server = serve({ port: PORT });
+
+console.log(`Listening at ${PORT}`);
+
+for await (const req of server) {
+  console.log({ req });
+
+  req.respond({
+    body: "Basic Request",
+  });
+}
+```
+
+## Thirdy Party Modules
+
+```bash
+$ deno install --allow-read --allow-run --allow-write --allow-net -f --unstable https://deno.land/x/denon@2.3.0/denon.ts
+
+
+denon run --allow-net server.ts
+```
+
+#### Case Module
+
+```ts
+import {
+  camelCase,
+  paramCase,
+  pathCase,
+  snakeCase,
+} from "https://deno.land/x/case/mod.ts";
+
+const text = "Hello world!";
+
+console.log(camelCase(text));
+console.log(paramCase(text));
+console.log(snakeCase(text));
+console.log(pathCase(text));
+```
+
+## Watch mode
+
+```bash
+$ denon run --allow-net server.ts
+```
+
+Denon wrapper deno, so you can still call and pass arguments the same way you would do usind `deno`
+
+### API
+
+```ts
+import { Application, Context } from "https://deno.land/x/abc@v1/mod.ts";
+
+const PORT = 3000;
+const app = new Application();
+
+// Routing
+app.get("/", async (context: Context) => {
+  await context.file("./public/served-html-example.html");
+});
+
+app.start({ port: PORT });
+```
+
+> Obs. app.get() returns the `app` so you can chain methods like:
+
+```ts
+app.get("/", ...)
+  .get("/test", ...)
+  .get("...")
+```
+
+### Static Files
+
+By default Deno + abc do not serve static files
+
+```ts
+import { Application, Context } from "https://deno.land/x/abc@v1/mod.ts";
+
+const PORT = 3000;
+const app = new Application();
+
+// Static
+app.static("/", "./public");
+
+app.start({ port: PORT });
 ```
