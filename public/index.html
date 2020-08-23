@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat</title>
+    <style></style>
+  </head>
+  <body>
+    <main class="container">
+      <h1>Chat</h1>
+      <form class="name-form">
+        <input
+          type="text"
+          name="nickname"
+          placeholder="Choose a nickname"
+          required
+        />
+        <button>Enter Chat</button>
+      </form>
+
+      <section class="chatroom">
+        <ul class="chat-list">
+          <li class="message">
+            <div class="name">Mario</div>
+            <div class="message">Hey!</div>
+          </li>
+        </ul>
+
+        <form class="chat-form">
+          <input
+            type="text"
+            name="message"
+            placeholder="Type a message"
+            required
+          />
+        </form>
+      </section>
+    </main>
+    <script>
+      let websocket = new WebSocket("ws://localhost:3000/ws");
+    </script>
+  </body>
+</html>

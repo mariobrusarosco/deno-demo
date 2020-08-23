@@ -1,25 +1,38 @@
-import { Application, Context } from "https://deno.land/x/abc@v1/mod.ts";
+import { serve } from "https://deno.land/std@0.64.0/http/server.ts";
 import {
-  get_book,
-  create_book,
-  delete_book,
-  get_all_books,
-} from "./controllers/books.ts";
+  acceptWebSocket,
+  isWebSocketCloseEvent,
+  isWebSocketPingEvent,
+  WebSocket,
+  acceptable,
+} from "https://deno.land/std@0.64.0/ws/mod.ts";
+
+import { chatConnection } from "./ws/chatroom.ts";
 
 const PORT = 3000;
-const app = new Application();
+const server = serve({ port: PORT });
 
-// Static
-app.static("/", "./public");
+console.log(`Running on ${PORT}`);
 
-// Routing
-app.get("/", async (context: Context) => {
-  await context.file("./public/served-html-example.html");
-});
+for await (const req of server) {
+  if (req.url === "/") {
+    req.respond({
+      status: 200,
+      body: await Deno.open("./public/index.html"),
+    });
+  }
 
-app.get("/books", get_all_books)
-  .get("/books:id", get_book)
-  .post("/books", create_book)
-  .delete("/books:id", delete_book);
+  if (req.url === "/ws") {
+    if (acceptable(req)) {
+      const { conn, r: bufReader, w: bufWriter, headers } = req;
 
-app.start({ port: PORT });
+      acceptWebSocket({
+        conn,
+        bufReader,
+        bufWriter,
+        headers,
+      })
+        .then(chatConnection);
+    }
+  }
+}
