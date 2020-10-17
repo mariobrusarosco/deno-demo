@@ -80,6 +80,7 @@ await Deno.writeFile(filePath, contentToAppend);
 deno run --allow-read myfile.ts
 
 ```ts
+
 ```
 
 ### Renaming and removing Files
@@ -215,7 +216,8 @@ import { Application, Context } from "https://deno.land/x/abc@v1/mod.ts";
 const PORT = 3000;
 const app = new Application();
 
-// Routing
+#### Routing
+
 app.get("/", async (context: Context) => {
   await context.file("./public/served-html-example.html");
 });

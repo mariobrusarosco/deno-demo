@@ -31,8 +31,7 @@ for await (const req of server) {
         bufReader,
         bufWriter,
         headers,
-      })
-        .then(chatConnection);
+      }).then(chatConnection);
     }
   }
 }
